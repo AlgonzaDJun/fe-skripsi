@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import { Dropdown } from "flowbite-react";
 import { useQuery } from "react-query";
-import "flowbite";
+import { initFlowbite } from "flowbite";
+import { useEffect } from "react";
 
 const fetchUserById = async (id) => {
   const response = await fetch(
@@ -25,6 +26,10 @@ const Navbar = () => {
     queryFn: () => fetchUserById(localStorage.getItem("id")),
     queryKey: "user",
   });
+
+  useEffect(() => {
+    initFlowbite();
+  }, []);
 
   // console.log(data)
 
