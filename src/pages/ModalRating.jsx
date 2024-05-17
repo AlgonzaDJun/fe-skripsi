@@ -9,7 +9,7 @@ import Loading from "../components/Loading";
 
 const postRating = async ({ id, rating }) => {
   const response = await fetch(
-    `http://localhost:8000/rating/${id}?rating=${rating}`,
+    `${import.meta.env.VITE_BACKEND_LOCAL}/rating/${id}?rating=${rating}`,
     {
       method: "POST",
     }
