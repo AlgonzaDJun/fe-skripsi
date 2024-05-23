@@ -6,15 +6,19 @@ import { useMutation } from "react-query";
 import Loading from "./Loading";
 import Select from "react-select";
 import Swal from "sweetalert2";
+import { useEffect } from "react";
 
 const postRegsiter = async (data) => {
-  const response = await fetch(`${import.meta.env.VITE_BACKEND_LOCAL}/auth/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_LOCAL}/auth/register`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
   return response.json();
 };
 
@@ -110,7 +114,7 @@ const Register = () => {
 
   const jurusan = [
     {
-      label: "Pilih Jurusan",
+      label: "Pilih Prodi",
     },
     {
       label: "FAKULTAS ILMU PENDIDIKAN",
@@ -463,6 +467,376 @@ const Register = () => {
     },
   ];
 
+  const [filteredJurusan, setFilteredJurusan] = useState([
+    {
+      label: "Pilih Fakultas terlebih dahulu",
+    },
+  ]);
+
+  useEffect(() => {
+    if (dataSubmit.fakultas != "") {
+      const jurusanFiltereds = jurusan.filter(
+        (item) => item.label === dataSubmit.fakultas
+      );
+      setFilteredJurusan(jurusanFiltereds);
+    }
+  }, [dataSubmit.fakultas]);
+
+  // const jurusan = [
+  //   {
+  //     label: "Pilih Jurusan",
+  //   },
+  //   {
+  //     label: "FAKULTAS ILMU PENDIDIKAN",
+  //     options: [
+  //       { value: "BIMBINGAN dan KONSELING", label: "BIMBINGAN dan KONSELING" },
+  //       { value: "TEKNOLOGI PENDIDIKAN", label: "TEKNOLOGI PENDIDIKAN" },
+  //       { value: "PEND. LUAR SEKOLAH", label: "PEND. LUAR SEKOLAH" },
+  //       { value: "PEND. LUAR BIASA", label: "PEND. LUAR BIASA" },
+  //       { value: "PGSD", label: "PGSD" },
+  //       { value: "PSIKOLOGI", label: "PSIKOLOGI" },
+  //       { value: "PG-PAUD", label: "PG-PAUD" },
+  //       { value: "MANAJEMEN PENDIDIKAN", label: "MANAJEMEN PENDIDIKAN" },
+  //     ],
+  //   },
+  //   {
+  //     label: "FAKULTAS BAHASA DAN SENI",
+  //     //       S1 Desain Komunikasi Visual
+  //     // S1 Pendidikan Bahasa Mandarin
+  //     // S1 Seni Musik
+  //     // S1 Seni Rupa
+  //     // S1 Sastra Inggris
+  //     // S1 Pendidikan Bahasa Jerman
+  //     // S1 Pendidikan Seni Rupa
+  //     // S1 Sastra Jerman
+  //     // S1 Pendidikan Bahasa Inggris
+  //     // S1 Pendidikan Bahasa dan Sastra Jawa
+  //     // S1 Pendidikan Bahasa Jepang
+  //     // S1 Sastra Indonesia
+  //     // S1 Pendidikan Bahasa dan Sastra Indonesia
+  //     // S1 Pendidikan Seni Drama, Tari, dan Musik
+  //     // D III Desain Grafis
+  //     // D III Bahasa Inggris
+  //     options: [
+  //       {
+  //         value: "Desain Komunikasi Visual",
+  //         label: "Desain Komunikasi Visual",
+  //       },
+  //       {
+  //         value: "Pendidikan Bahasa Mandarin",
+  //         label: "Pendidikan Bahasa Mandarin",
+  //       },
+  //       { value: "Seni Musik", label: "Seni Musik" },
+  //       { value: "Seni Rupa", label: "Seni Rupa" },
+  //       { value: "Sastra Inggris", label: "Sastra Inggris" },
+  //       {
+  //         value: "Pendidikan Bahasa Jerman",
+  //         label: "Pendidikan Bahasa Jerman",
+  //       },
+  //       {
+  //         value: "Pendidikan Seni Rupa",
+  //         label: "Pendidikan Seni Rupa",
+  //       },
+  //       { value: "Sastra Jerman", label: "Sastra Jerman" },
+  //       {
+  //         value: "Pendidikan Bahasa Inggris",
+  //         label: "Pendidikan Bahasa Inggris",
+  //       },
+  //       {
+  //         value: "Pendidikan Bahasa dan Sastra Jawa",
+  //         label: "Pendidikan Bahasa dan Sastra Jawa",
+  //       },
+  //       {
+  //         value: "Pendidikan Bahasa Jepang",
+  //         label: "Pendidikan Bahasa Jepang",
+  //       },
+  //       { value: "Sastra Indonesia", label: "Sastra Indonesia" },
+  //       {
+  //         value: "Pendidikan Bahasa dan Sastra Indonesia",
+  //         label: "Pendidikan Bahasa dan Sastra Indonesia",
+  //       },
+  //       {
+  //         value: "Pendidikan Seni Drama, Tari, dan Musik",
+  //         label: "Pendidikan Seni Drama, Tari, dan Musik",
+  //       },
+  //       { value: "D III Desain Grafis", label: "D III Desain Grafis" },
+  //       { value: "D III Bahasa Inggris", label: "D III Bahasa Inggris" },
+  //     ],
+  //   },
+  //   {
+  //     label: "FAKULTAS MIPA",
+  //     options: [
+  //       {
+  //         value: "Pendidikan Biologi",
+  //         label: "Pendidikan Biologi",
+  //       },
+  //       {
+  //         value: "Matematika",
+  //         label: "Matematika",
+  //       },
+  //       {
+  //         value: "Pendidikan Kimia",
+  //         label: "Pendidikan Kimia",
+  //       },
+  //       {
+  //         value: "Fisika",
+  //         label: "Fisika",
+  //       },
+  //       {
+  //         value: "Pendidikan Matematika",
+  //         label: "Pendidikan Matematika",
+  //       },
+  //       {
+  //         value: "Biologi",
+  //         label: "Biologi",
+  //       },
+  //       {
+  //         value: "Pendidikan Sains",
+  //         label: "Pendidikan Sains",
+  //       },
+  //       {
+  //         value: "Pendidikan Fisika",
+  //         label: "Pendidikan Fisika",
+  //       },
+  //       {
+  //         value: "Kimia",
+  //         label: "Kimia",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     label: "FAKULTAS ILMU SOSIAL dan HUKUM",
+  //     options: [
+  //       {
+  //         value: "Ilmu Hukum",
+  //         label: "Ilmu Hukum",
+  //       },
+  //       {
+  //         value: "Pendidikan Sejarah",
+  //         label: "Pendidikan Sejarah",
+  //       },
+  //       {
+  //         value: "Ilmu Administrasi Negara",
+  //         label: "Ilmu Administrasi Negara",
+  //       },
+  //       {
+  //         value: "Pendidikan Pancasila dan Kewarganegaraan",
+  //         label: "Pendidikan Pancasila dan Kewarganegaraan",
+  //       },
+  //       {
+  //         value: "Sosiologi",
+  //         label: "Sosiologi",
+  //       },
+  //       {
+  //         value: "Pendidikan Geografi",
+  //         label: "Pendidikan Geografi",
+  //       },
+  //       {
+  //         value: "Ilmu komunikasi",
+  //         label: "Ilmu komunikasi",
+  //       },
+  //       {
+  //         value: "D III Administrasi Negara",
+  //         label: "D III Administrasi Negara",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     label: "FAKULTAS TEKNIK",
+  //     //       S1 Teknik Mesin
+  //     // D III Transportasi
+  //     // S1 Teknik Elektro
+  //     // S1 Teknik Sipil
+  //     // S1 Pend. Teknik Elektro
+  //     // DIII Tata Boga
+  //     // S1 Pend Teknik Bangunan
+  //     // S1 Pendidikan Tata Rias
+  //     // S1 Teknik Informatika
+  //     // S1 Sistem Informasi
+  //     // DIII Teknik Mesin
+  //     // DIII Teknik Sipil
+  //     // S1 Pendidikan Teknologi Informasi
+  //     // D III Manajemen Informatika
+  //     // S1 Pendidikan Tata Boga
+  //     // DIII Tata Busana
+  //     // DIII Teknik Listrik
+  //     // S1 Pend Teknik Mesin
+  //     // S1 Pendidikan Tata Busana
+  //     // S1 Pendidikan Kesejahteraan Keluarga
+  //     options: [
+  //       { value: "Teknik Mesin", label: "Teknik Mesin" },
+  //       { value: "Transportasi", label: "Transportasi" },
+  //       { value: "Teknik Elektro", label: "Teknik Elektro" },
+  //       { value: "Teknik Sipil", label: "Teknik Sipil" },
+  //       { value: "Pend. Teknik Elektro", label: "Pend. Teknik Elektro" },
+  //       { value: "Tata Boga", label: "Tata Boga" },
+  //       { value: "Pend Teknik Bangunan", label: "Pend Teknik Bangunan" },
+  //       { value: "Pendidikan Tata Rias", label: "Pendidikan Tata Rias" },
+  //       { value: "Teknik Informatika", label: "Teknik Informatika" },
+  //       { value: "Sistem Informasi", label: "Sistem Informasi" },
+  //       { value: "Teknik Mesin", label: "Teknik Mesin" },
+  //       { value: "Teknik Sipil", label: "Teknik Sipil" },
+  //       {
+  //         value: "Pendidikan Teknologi Informasi",
+  //         label: "Pendidikan Teknologi Informasi",
+  //       },
+  //       {
+  //         value: "Manajemen Informatika",
+  //         label: "Manajemen Informatika",
+  //       },
+  //       { value: "Tata Boga", label: "Tata Boga" },
+  //       { value: "Tata Busana", label: "Tata Busana" },
+  //       { value: "Teknik Listrik", label: "Teknik Listrik" },
+  //       { value: "Pend Teknik Mesin", label: "Pend Teknik Mesin" },
+  //       {
+  //         value: "Pendidikan Tata Busana",
+  //         label: "Pendidikan Tata Busana",
+  //       },
+  //       {
+  //         value: "Pendidikan Kesejahteraan Keluarga",
+  //         label: "Pendidikan Kesejahteraan Keluarga",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     label: "FAKULTAS ILMU OLAHRAGA",
+  //     options: [
+  //       //         S1 Pendidikan Kepelatihan Olahraga
+  //       // S1 Ilmu Keolahragaan
+  //       // S1 Pend. Jasmani, Kesehatan, dan Rekreasi
+  //       {
+  //         value: "Pendidikan Kepelatihan Olahraga",
+  //         label: "Pendidikan Kepelatihan Olahraga",
+  //       },
+  //       { value: "Ilmu Keolahragaan", label: "Ilmu Keolahragaan" },
+  //       {
+  //         value: "Pend. Jasmani, Kesehatan, dan Rekreasi",
+  //         label: "Pend. Jasmani, Kesehatan, dan Rekreasi",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     label: "PASCA SARJANA",
+  //     options: [
+  //       //         S2 Pendidikan Luar Biasa
+  //       // S3 Pendidikan Sains
+  //       // S2 Pendidikan Luar Sekolah
+  //       // S2 Pendidikan Teknologi dan Kejuruan
+  //       // S2 Pendidikan IPS
+  //       // S2 Pendidikan Ekonomi
+  //       // S3 Teknologi Pendidikan
+  //       // S3 Manajemen Pendidikan
+  //       // S2 Teknologi Pendidikan
+  //       // S2 Pendidikan Seni Budaya
+  //       // S2 Pendidikan Sains
+  //       // S2 Pendidikan Bahasa dan Sastra
+  //       // S3 Pendidikan Bahasa dan Sastra
+  //       // S3 Ilmu Keolahragaan
+  //       // S2 Pendidikan Olahraga
+  //       // S2 Manajemen Pendidikan
+  //       // S2 Pendidikan Matematika
+  //       // S3 Pendidikan Matematika
+  //       // S2 Pendidikan Dasar
+  //       // S2 Pendidikan Geografi
+  //       // S3 Pendidikan Vokasi
+  //       // S2 Manajemen
+  //       // S2 Bimbingan Konseling
+  //       {
+  //         value: "Pendidikan Luar Biasa",
+  //         label: "Pendidikan Luar Biasa",
+  //       },
+  //       { value: "Pendidikan Sains", label: "Pendidikan Sains" },
+  //       {
+  //         value: "Pendidikan Luar Sekolah",
+  //         label: "Pendidikan Luar Sekolah",
+  //       },
+  //       {
+  //         value: "Pendidikan Teknologi dan Kejuruan",
+  //         label: "Pendidikan Teknologi dan Kejuruan",
+  //       },
+  //       { value: "Pendidikan IPS", label: "Pendidikan IPS" },
+  //       { value: "Pendidikan Ekonomi", label: "Pendidikan Ekonomi" },
+  //       {
+  //         value: "Teknologi Pendidikan",
+  //         label: "Teknologi Pendidikan",
+  //       },
+  //       {
+  //         value: "Manajemen Pendidikan",
+  //         label: "Manajemen Pendidikan",
+  //       },
+  //       {
+  //         value: "Teknologi Pendidikan",
+  //         label: "Teknologi Pendidikan",
+  //       },
+  //       {
+  //         value: "Pendidikan Seni Budaya",
+  //         label: "Pendidikan Seni Budaya",
+  //       },
+  //       { value: "Pendidikan Sains", label: "Pendidikan Sains" },
+  //       {
+  //         value: "Pendidikan Bahasa dan Sastra",
+  //         label: "Pendidikan Bahasa dan Sastra",
+  //       },
+  //       {
+  //         value: "Pendidikan Bahasa dan Sastra",
+  //         label: "Pendidikan Bahasa dan Sastra",
+  //       },
+  //       {
+  //         value: "Ilmu Keolahragaan",
+  //         label: "Ilmu Keolahragaan",
+  //       },
+  //       { value: "Pendidikan Olahraga", label: "Pendidikan Olahraga" },
+  //       {
+  //         value: "Manajemen Pendidikan",
+  //         label: "Manajemen Pendidikan",
+  //       },
+  //       {
+  //         value: "Pendidikan Matematika",
+  //         label: "Pendidikan Matematika",
+  //       },
+  //       {
+  //         value: "Pendidikan Matematika",
+  //         label: "Pendidikan Matematika",
+  //       },
+  //       { value: "Pendidikan Dasar", label: "Pendidikan Dasar" },
+  //       { value: "Pendidikan Geografi", label: "Pendidikan Geografi" },
+  //       { value: "Pendidikan Vokasi", label: "Pendidikan Vokasi" },
+  //       { value: "Manajemen", label: "Manajemen" },
+  //       { value: "Bimbingan Konseling", label: "Bimbingan Konseling" },
+  //     ],
+  //   },
+  //   {
+  //     label: "FAKULTAS EKONOMI",
+  //     options: [
+  //       //         S1 Pendidikan Akuntansi
+  //       // S1 Pendidikan Tata Niaga
+  //       // S1 Pendidikan Administrasi Perkantoran
+  //       // D III Akuntansi
+  //       // S1 Manajemen
+  //       // S1 Pend. Ekonomi
+  //       // S1 Ekonomi Islam
+  //       // S1 Akuntansi
+  //       {
+  //         value: "Pendidikan Akuntansi",
+  //         label: "Pendidikan Akuntansi",
+  //       },
+  //       {
+  //         value: "Pendidikan Tata Niaga",
+  //         label: "Pendidikan Tata Niaga",
+  //       },
+  //       {
+  //         value: "Pendidikan Administrasi Perkantoran",
+  //         label: "Pendidikan Administrasi Perkantoran",
+  //       },
+  //       { value: "D3 Akuntansi", label: "D3 Akuntansi" },
+  //       { value: "Manajemen", label: "Manajemen" },
+  //       { value: "Pend. Ekonomi", label: "Pend. Ekonomi" },
+  //       { value: "Ekonomi Islam", label: "Ekonomi Islam" },
+  //       { value: "S1 Akuntansi", label: "S1 Akuntansi" },
+  //     ],
+  //   },
+  // ];
+
   const groupStyles = {
     display: "flex",
     alignItems: "center",
@@ -730,27 +1104,7 @@ const Register = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex -mx-3">
-                  <div className="w-full px-3 mb-5">
-                    <label htmlFor="" className="text-xs font-semibold px-1">
-                      Program Studi
-                    </label>
-                    <Select
-                      id="jurusan"
-                      required
-                      name="jurusan"
-                      className="w-full rounded-md text-black "
-                      defaultValue={jurusan[0]}
-                      onChange={(e) => {
-                        setDataSubmit({ ...dataSubmit, prodi: e.value });
-                      }}
-                      isMulti={false}
-                      isClearable
-                      options={jurusan}
-                      formatGroupLabel={formatGroupLabel}
-                    />
-                  </div>
-                </div>
+
                 <div className="flex -mx-3">
                   <div className="w-full px-3 mb-5">
                     <label htmlFor="" className="text-xs font-semibold px-1">
@@ -768,6 +1122,33 @@ const Register = () => {
                       isMulti={false}
                       isClearable
                       options={fakultas}
+                    />
+                  </div>
+                </div>
+                <div className="flex -mx-3">
+                  <div className="w-full px-3 mb-5">
+                    <label htmlFor="" className="text-xs font-semibold px-1">
+                      Program Studi
+                    </label>
+                    <Select
+                      id="jurusan"
+                      required
+                      name="jurusan"
+                      className="w-full rounded-md text-black "
+                      defaultValue={jurusan[0]}
+                      onChange={(e) => {
+                        setDataSubmit({ ...dataSubmit, prodi: e.value });
+                      }}
+                      isOptionDisabled={(option) => {
+                        if (dataSubmit.fakultas === "") {
+                          return true;
+                        }
+                        return false;
+                      }}
+                      isMulti={false}
+                      isClearable
+                      options={filteredJurusan}
+                      formatGroupLabel={formatGroupLabel}
                     />
                   </div>
                 </div>
