@@ -151,7 +151,13 @@ const Navbar = () => {
             {localStorage.getItem("id") ? (
               <>
                 <Dropdown
-                  label={data ? data.data.full_name : ""}
+                  label={
+                    data ? (
+                      <img src={"https://ui-avatars.com/api/?name="+data.data.full_name+"&background=random&color=fff"} alt="" className="w-8 h-8 rounded-full" />
+                    ) : (
+                      ""
+                    )
+                  }
                   inline
                   // placement="bottom"
                 >
@@ -159,7 +165,7 @@ const Navbar = () => {
                     data.data.role === "admin" ? (
                       <Dropdown.Item href="/admin">Dashboard</Dropdown.Item>
                     ) : (
-                      <></>
+                      <Dropdown.Item>{data.data.full_name}</Dropdown.Item>
                     )
                   ) : null}
                   <Dropdown.Item onClick={handleLogout}>Log Out</Dropdown.Item>
