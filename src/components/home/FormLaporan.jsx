@@ -1,10 +1,12 @@
+/* eslint-disable no-unused-vars */
 import { Label } from "flowbite-react";
 import { useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loading from "../Loading";
+import { useEffect } from "react";
 
 const MAX_COUNT = 5;
 
@@ -18,6 +20,13 @@ const postLaporan = async (data) => {
       },
       body: JSON.stringify(data),
     }
+  );
+  return response.json();
+};
+
+const getUserData = async (id) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_LOCAL}/auth/${id}`
   );
   return response.json();
 };
@@ -67,9 +76,33 @@ const FormLaporan = () => {
     setDataSubmit({ ...dataSubmit, [e.target.name]: e.target.value });
   };
 
+  const { data: dataUser } = useQuery({
+    queryFn: () => getUserData(localStorage.getItem("id")),
+    queryKey: "user",
+  });
+
+  useEffect(() => {
+    if (dataUser && dataUser.data) {
+      setDataSubmit((prev) => ({
+        ...prev,
+        fakultas: dataUser.data.fakultas,
+        jurusan: dataUser.data.prodi,
+      }));
+      // console.log(dataUser.data)
+    }
+  }, dataUser);
+
+  // console.log(dataSubmit)
+
   const handleSubmit = async (e) => {
     if (localStorage.getItem("id") === null) {
       toast.error("Anda harus login terlebih dahulu");
+      return;
+    }
+
+    // check if datasubmit.deskripsi is less than 7 words
+    if (dataSubmit.deskripsi.split(" ").length < 7) {
+      toast.error("Tolong perbanyak deskripsi laporan anda");
       return;
     }
 
@@ -125,7 +158,7 @@ const FormLaporan = () => {
   const handleFileEvent = (e) => {
     const chosenFiles = Array.prototype.slice.call(e.target.files);
     handleUploadFiles(chosenFiles);
-};
+  };
 
   const fakultas = [
     {
@@ -569,7 +602,7 @@ const FormLaporan = () => {
         onChange={handleChange}
         name="fakultas"
       /> */}
-      <div className="">
+      {/* <div className="">
         <div className="mb-2 block">
           <Label htmlFor="fakultas" value="Fakultas Anda" />
         </div>
@@ -586,8 +619,7 @@ const FormLaporan = () => {
           isClearable
           options={fakultas}
         />
-        {/* FAKULTAS ILMU PENDIDIKAN, FAKULTAS BAHASA DAN SENI,FAKULTAS MIPA,FAKULTAS ILMU SOSIAL,FAKULTAS TEKNIK, FAKULTAS ILMU KEOLAHRAGAAN,FAKULTAS EKONOMI */}
-      </div>
+      </div> */}
 
       {/* <input
         type="text"
@@ -598,7 +630,7 @@ const FormLaporan = () => {
         name="jurusan"
       /> */}
 
-      <div className="">
+      {/* <div className="">
         <div className="mb-2 block">
           <Label htmlFor="jurusan" value="Jurusan Anda" />
         </div>
@@ -616,13 +648,13 @@ const FormLaporan = () => {
           options={jurusan}
           formatGroupLabel={formatGroupLabel}
         />
-      </div>
+      </div> */}
 
       <textarea
         id=""
         rows="8"
         className="w-full border rounded-md p-2 text-black"
-        placeholder="Deskripsi/ isi laporan anda"
+        placeholder="Deskripsi/ isi laporan anda (isi ini selengkap-lengkapnya, lebih panjang lebih baik)"
         value={dataSubmit.deskripsi}
         onChange={handleChange}
         name="deskripsi"
